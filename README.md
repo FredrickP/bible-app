@@ -2,6 +2,41 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+# Bible App
+
+Bible App is a simple mobile application built with React Native Expo.  
+This app helps users read Bible verses, search verses by book, chapter, and verse, choose Bible translations, and save favorite verses as bookmarks.
+
+The Bible verse data is fetched from bible-api.com.  
+This project is currently in early development and will be continuously updated with new features, UI/UX improvements, and code structure enhancements.
+
+## Current Features
+
+- Splash screen
+- Home screen
+- Daily verse
+- Search verse by book, chapter, and verse
+- Old Testament and New Testament selection
+- Bible translation picker
+- Bookmark favorite verses
+- Remove bookmark with confirmation
+
+## Tech Stack
+
+- React Native
+- Expo
+- TypeScript
+- Expo Router
+- AsyncStorage
+- bible-api.com
+
+## Development Status
+
+This project is still in active development.  
+Updates and improvements will be added continuously.
+
+---
+
 ## Get started
 
 1. Install dependencies
