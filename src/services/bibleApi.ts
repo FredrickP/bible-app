@@ -11,6 +11,7 @@ export async function getVerseByReference(
 ): Promise<BibleVerse | null> {
   try {
     const encodedReference = encodeURIComponent(reference);
+
     const response = await fetch(`https://bible-api.com/${encodedReference}`);
 
     if (!response.ok) {
