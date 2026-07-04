@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -14,14 +15,29 @@ import {
 } from "react-native";
 
 import { Colors } from "../../src/constants/colors";
+import { getTranslationLabel } from "../../src/constants/translations";
 import { getVerseByReference } from "../../src/services/bibleApi";
 import { saveBookmark } from "../../src/storage/bookmarkStorage";
+import { getSavedTranslation } from "../../src/storage/translationStorage";
 import { BibleVerse } from "../../src/types/bible";
+import { BibleTranslation } from "../../src/types/translation";
 
 export default function SearchScreen() {
   const [reference, setReference] = useState("John 3:16");
   const [verse, setVerse] = useState<BibleVerse | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [translation, setTranslation] = useState<BibleTranslation>("web");
+
+  useFocusEffect(
+    useCallback(() => {
+      async function loadTranslation() {
+        const savedTranslation = await getSavedTranslation();
+        setTranslation(savedTranslation);
+      }
+
+      loadTranslation();
+    }, []),
+  );
 
   async function handleSearch() {
     const cleanReference = reference.trim();
@@ -34,7 +50,7 @@ export default function SearchScreen() {
     setIsLoading(true);
     setVerse(null);
 
-    const result = await getVerseByReference(cleanReference);
+    const result = await getVerseByReference(cleanReference, translation);
 
     setIsLoading(false);
 
@@ -68,8 +84,8 @@ export default function SearchScreen() {
           <Text style={styles.title}>Search Verse</Text>
 
           <Text style={styles.subtitle}>
-            Search Bible verses by reference. Try John 3:16, Psalm 23:1, or
-            Romans 8:28.
+            Current translation: {translation.toUpperCase()} -{" "}
+            {getTranslationLabel(translation)}
           </Text>
 
           <View style={styles.searchCard}>

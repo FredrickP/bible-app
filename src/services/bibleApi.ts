@@ -1,18 +1,23 @@
 import { BibleVerse } from "../types/bible";
+import { BibleTranslation } from "../types/translation";
 
 type BibleApiResponse = {
   reference: string;
   text: string;
+  translation_id?: string;
   translation_name?: string;
 };
 
 export async function getVerseByReference(
   reference: string,
+  translation: BibleTranslation,
 ): Promise<BibleVerse | null> {
   try {
     const encodedReference = encodeURIComponent(reference);
 
-    const response = await fetch(`https://bible-api.com/${encodedReference}`);
+    const response = await fetch(
+      `https://bible-api.com/${encodedReference}?translation=${translation}`,
+    );
 
     if (!response.ok) {
       return null;
@@ -21,7 +26,7 @@ export async function getVerseByReference(
     const data: BibleApiResponse = await response.json();
 
     return {
-      id: data.reference.toLowerCase().replace(/\s+/g, "-"),
+      id: `${translation}-${data.reference.toLowerCase().replace(/\s+/g, "-")}`,
       reference: data.reference,
       text: data.text.trim(),
       translationName: data.translation_name,
