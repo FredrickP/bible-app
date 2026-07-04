@@ -25,11 +25,27 @@ export default function BookmarksScreen() {
     setBookmarks(data);
   }
 
-  async function handleRemove(verseId: string) {
-    await removeBookmark(verseId);
-    await loadBookmarks();
+  function handleRemove(verseId: string) {
+    Alert.alert(
+      "Delete Saved Verse",
+      "Do you want to delete this saved verse?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes, Delete",
+          style: "destructive",
+          onPress: async () => {
+            await removeBookmark(verseId);
+            await loadBookmarks();
 
-    Alert.alert("Removed", "Verse has been removed from bookmarks.");
+            Alert.alert("Deleted", "The verse has been deleted.");
+          },
+        },
+      ],
+    );
   }
 
   useFocusEffect(
